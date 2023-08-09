@@ -1,0 +1,242 @@
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Basket</title>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/cart.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+</head>
+
+<body>
+    <main>
+        <nav class="navbar navbar-expand-lg navbar-light ">
+            <a href="/home" class="navbar-brand text-white"><img
+                    src="https://res.cloudinary.com/de8cuyd0n/image/upload/v1520412541/E-commerce%20landing%20page/icons/BRANDY_1x.png"
+                    alt="brand-logo"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link text-warning" href="/home">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-warning" href="#">Categories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-warning" href="#">Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-warning" href="#">Wishlist</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-warning" href="#">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-danger" href="/cart">Cart</a>
+                    </li>
+
+                </ul>
+
+                {{!-- <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline btn btn-warning my-2 my-sm-0" type="submit">Search</button>
+                </form> --}}
+                <a class="nav-item nav-link text-danger   ml-auto" href="/logout" id="logout-btn">LogOut</a>
+            </div>
+        </nav>
+        <div class="basket">
+            <div class="basket-module">
+                <label for="promo-code">Enter a promotional code</label>
+                <input id="promo-code" type="text" name="promo-code" maxlength="5" class="promo-code-field">
+                <button class="promo-code-cta">Apply</button>
+            </div>
+            <div class="basket-labels">
+                <ul>
+                    <li class="item item-heading">Item</li>
+                    <li class="price">Price</li>
+                    <li class="quantity">Quantity</li>
+                    {{!-- <li class="subtotal">Subtotal</li> --}}
+                </ul>
+            </div>
+            {{#each products}}
+            <div class="basket-product">
+                {{!-- {{#each this.product}} --}}
+                <div class="item">
+                    <div class="product-image">
+                        <img src="/product-images/{{this.product._id}}.jpg" alt="Placeholder Image "
+                            style="width: 120px; height: 166px;" class="product-frame">
+                    </div>
+                    <div class="product-details">
+                        <h1>{{this.product.Name}}</h1>
+                        {{!-- <p><strong>Navy, Size 18</strong></p> --}}
+                        {{!-- <p>Product Code - 232321939</p> --}}
+                    </div>
+                </div>
+                <div class="price">{{this.product.Price}}</div>
+                {{!-- {{/each}} --}}
+                <div class="quantity">
+                    <div class="quantity-container">
+
+                        <button class="cart-count"
+                            onclick="changeQuantity('{{this._id}}','{{this.product._id}}',-1,+1)">-</button>
+                        {{!-- <input type="text" class="quantity-input" value="{{this.quantity}} " readonly> --}}
+                        {{#if (notEqual this.product.Stock 0 )}}
+                        <span class="quantity-input" id="{{this.product._id}}">{{this.quantity}}</span>
+                        {{!-- <span class="quantity-input" id="{{this.product._id}}"></span> --}}
+                        {{else}}
+                        <p class="text-danger  ">OutOfStock </p>
+                        {{/if}}
+
+
+                        <button class="cart-count"
+                            onclick="changeQuantity('{{this._id}}','{{this.product._id}}',1,-1)">+</button>
+                        {{!-- {{else}}
+                        <p class="text-danger  ">Out Of Stock </p>
+                        {{/if}} --}}
+
+                    </div>
+
+                    {{!-- <input type="number" value={{this.quantity}} min="1" class="quantity-field"> --}}
+                </div>
+                {{!-- {{#if (lessthanequal this.product.Stock 1 )}}
+
+                <p class="text-danger  ">Out Of Stock </p>
+
+                {{/if}} --}}
+                {{!-- {{#each ../subTotal}}
+                <div class="subtotal">{{SubTotal}}</div>
+                {{/each}} --}}
+
+                <div class="remove">
+                    <button onclick="removeProduct('{{this._id}}','{{this.product._id}}')">Remove</button>
+                </div>
+            </div>
+            {{/each}}
+
+            {{!-- {{#each subTotal}}
+            <div class="total-price">
+                <h3>Subtotal: {{this.SubTotal}}</h3>
+            </div>
+            {{/each}} --}}
+
+        </div>
+        <aside>
+            <div class="summary">
+                {{!-- <div class="summary-total-items"><span class="total-items"></span> Items in your Bag</div> --}}
+                {{#each subTotal}}
+                <div class="summary-subtotal">
+                    <div class="subtotal-title">Subtotal</div>
+                    <div class="subtotal-value final-value" id="basket-subtotal">{{this.SubTotal}}</div>
+                    <div class="summary-promo hide">
+                        <div class="promo-title">Promotion</div>
+                        <div class="promo-value final-value" id="basket-promo"></div>
+                    </div>
+                </div>
+                {{/each}}
+                <div class="summary-delivery">
+                    {{!-- <select name="delivery-collection" class="summary-delivery-selection"> --}}
+                        {{!-- <option value="0" selected="selected">Select Payment Option</option>
+                        <option value="collection">Cash On Delivery</option>
+                        <option value="first-class">Online Payment</option> --}}
+                        {{!-- <option value="second-class">Royal Mail 2nd Class</option>
+                        <option value="signed-for">Royal Mail Special Delivery</option> --}}
+                        {{!--
+                    </select> --}}
+                </div>
+                <div class="summary-total">
+                    <div class="total-title">Total</div>
+                    <div class="total-value final-value" id="basket-total">{{this.total}}</div>
+                </div>
+                <div class="summary-checkout">
+                    <a href="/placeorder" class="text-white" style="text-decoration: none;"><button
+                            class="checkout-cta">Go to Secure Checkout </button></a>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <script>
+
+        function changeQuantity(cartId, proId, count, stockcount) {
+            let quantity = parseInt(document.getElementById(proId).innerHTML)
+            count = parseInt(count)
+            console.log("ajjx");
+            $.ajax({
+                url: '/changeProductQuantity',
+                data: {
+                    cart: cartId,
+                    product: proId,
+                    count: count,
+                    quantity: quantity,
+                    stockcount: stockcount
+                },
+                method: 'post',
+                success: (response) => {
+                    console.log("succeeded ajjx")
+                    if (response.removeProduct) {
+                        alert("product Removed from cart")
+                        location.reload()
+                    }
+                    else {
+                        document.getElementById(proId).innerHTML = quantity + count
+                        location.reload()
+                    }
+                }
+            });
+        }
+
+        function removeProduct(cartId, proId) {
+            $.ajax({
+                url: '/removeCartProduct',
+                data: {
+                    cart: cartId,
+                    product: proId
+
+                },
+                method: 'post',
+                success: (response) => {
+                    console.log("succeeded ajjx")
+                    if (response.removeProduct) {
+                        alert("product Removed from cart")
+                        location.reload()
+                    }
+
+                }
+            });
+        }
+    </script>
+    <script>
+       let productQuantity=0
+       let productStock=0
+       {{#each products}}
+      
+        productQuantity = {{this.quantity}};
+         productStock = {{this.product.Stock}};
+       if(productQuantity>productStock){
+        if(productStock===0){
+         const spanElement = document.getElementById("{{this.product._id}}");
+         spanElement.textContent = "Out_of_Stock";
+        }else{
+        // Assuming you have access to the span element through its ID or any other means
+        const spanElement = document.getElementById("{{this.product._id}}");
+
+        // You can set the value of the span using the `textContent` property
+        spanElement.textContent = "Only_"+productStock+"_inStock";
+        }
+       }
+       
+        {{/each}}
+
+
+    </script>
+
+    <script src="/javascripts/cart.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,132 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" type="text/css" href="/stylesheets/home.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+
+
+<body>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light ">
+            <a href="/home" class="navbar-brand text-white"><img
+                    src="https://res.cloudinary.com/de8cuyd0n/image/upload/v1520412541/E-commerce%20landing%20page/icons/BRANDY_1x.png"
+                    alt="brand-logo"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link text-danger" href="/home">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-warning" href="#" id="categoriesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categories</a>
+                          <div class="dropdown-menu" aria-labelledby="categoriesDropdown"> 
+                <!-- Add your dropdown items here -->
+                {{#each category}}
+                <a class="dropdown-item text-warning" href="/getCategoryProduct?category={{this.Category}}">{{this.Category}}</a>
+                {{/each}}
+                {{!-- <a class="dropdown-item text-warning" href="#">Category 2</a> --}}
+                <!-- Add more categories as needed -->
+            </div>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link text-warning" href="/orders">Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-warning" href="#">Wishlist</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-warning" href="/profile">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-warning" href="/cart">Cart</a>
+                    </li>
+                    
+                </ul>
+                {{!-- <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline btn btn-warning my-2 my-sm-0" type="submit">Search</button>
+                </form> --}}
+                <a class="nav-item nav-link text-danger   ml-auto" href="/logout" id="logout-btn">LogOut</a>
+            </div>
+        </nav>
+        <section id="header" class="jumbotron text-left text-white">
+            <div class="container p-5 ">
+                <h1 class="display-4 ">GET UPTO 27% OFF!</h1>
+                <p class="lead"> Free shipping of all your products.</p>
+                <hr class="my-4">
+                <p>Patronize us today because limited products available</p>
+                {{!-- <a class="btn btn-primary btn-lg " href="#" role="button ">Learn more</a> --}}
+            </div>
+        </section>
+        <div class="container-fluid">
+            <div class="row">
+              
+                <h1 class="shop">Shop New Arrivals</h1>
+
+                <section id="gallery">
+                    <div class="container">
+                        <div class="row py-3">
+
+                             {{#each products}}
+
+                             <div class="col-lg-3 col-sm-6 mt-3">
+                              <a href="/productdetails/{{this._id}} " >
+                                <div class="card">
+                                    <img src="/product-images/{{this._id}}0.jpg" alt="product-image"  style="width: 200px; height: 250px;"
+                                        class="img-fluid mx-auto d-block" alt="img">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title">{{this.Name}}</h5>
+                                        <p class="card-text">₹{{this.Price}}</p>
+                                        {{!-- <a href="#" class="btn btn-outline-success btn-sm">Buy</a> --}}
+                                        {{!-- <a href="" class="btn btn-outline-danger btn-sm"><i
+                                                class="far fa-heart"></i></a> --}}
+                                    </div>
+                                </div>
+                                </a>
+                            </div>
+
+                             {{/each}}<br><br>
+
+
+
+
+
+
+
+                        </div>
+                    </div>
+                </section>
+                <br><br><br>
+               
+
+                <div class="container">
+                    <div id="footer" class="row">
+                       
+                      
+
+                        <div class="footer text-center">
+                            <p>BrandY@Gmail.com</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Optional JavaScript -->
+            <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js">
+            </script>
+</body>
+
+</html>

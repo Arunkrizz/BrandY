@@ -1,0 +1,177 @@
+<link rel="stylesheet" type="text/css" href="/stylesheets/userProfile.css">
+<div><a href="/home"><button class="btn btn-warning">Home</button></a></div>
+<div class="container rounded bg-white mt-5 mb-5">
+    <div class="row">
+        {{!-- <div class="col-md-3 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5"
+                    width="150px"
+                    src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span
+                    class="font-weight-bold">{{this.profile.Name}}</span><span
+                    class="text-black-50">{{this.profile.Email}}</span><span
+                    class="text-black-50">+{{this.profile.Mobile}}</span><span id="userId" class="text-black-50"
+                    style="display: none;">{{this.profile._id}}</span><a href="/changePassword"><span  class="text-black-50"
+                    >Change Password</span></a><span> </span></div>
+                    
+        </div> --}}
+        <div class="col-lg-4">
+        <div class="card mb-4">
+          <div class="card-body text-center">
+            {{!-- <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
+              class="rounded-circle img-fluid" style="width: 150px;"> --}}
+              <img class="rounded-circle mt-5"
+                    width="150px"
+                    src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
+            <h5 class="my-3">{{this.profile.Name}}</h5>
+            <p class="text-muted mb-1">{{this.profile.Email}}</p>
+            {{!-- <p class="text-muted mb-4">Bay Area, San Francisco, CA</p> --}}
+            {{!-- <div class="d-flex justify-content-center mb-2">
+              <button type="button" class="btn btn-primary">Follow</button>
+              <button type="button" class="btn btn-outline-primary ms-1">Message</button>
+            </div> --}}
+          </div>
+        </div>
+        <div class="card mb-4 mb-lg-0">
+          <div class="card-body p-0">
+            <ul class="list-group list-group-flush rounded-3">
+              <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                <i class="fas fa-globe fa-lg text-warning"></i>
+               <a href="/manageAddress"> <p class="mb-0">Address Book</p> </a>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                <i class="fab fa-github fa-lg" style="color: #333333;"></i>
+               <a href="/changePassword"><p class="mb-0">Change Password</p></a> 
+              </li>
+              {{!-- <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                <i class="fab fa-twitter fa-lg" style="color: #55acee;"></i>
+                <p class="mb-0">@mdbootstrap</p>
+              </li> --}}
+              {{!-- <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                <i class="fab fa-instagram fa-lg" style="color: #ac2bac;"></i>
+                <p class="mb-0">mdbootstrap</p>
+              </li> --}}
+              {{!-- <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                <i class="fab fa-facebook-f fa-lg" style="color: #3b5998;"></i>
+                <p class="mb-0">mdbootstrap</p>
+              </li> --}}
+            </ul>
+          </div>
+        </div>
+      </div>
+        <div class="col-md-5 border-right">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">Address Settings</h4>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-6"><label class="labels">Name</label><input id="firstname" type="text"
+                            class="form-control" placeholder="first name" value="{{this.profile.Address.firstname}}">
+                    </div>
+                    <div class="col-md-6"><label class="labels">Surname</label><input type="text" class="form-control"
+                            id="lastname" value="{{this.profile.Address.lastname}}" placeholder="surname"></div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12"><label class="labels">Mobile Number</label><input id="mobile" type="text"
+                            class="form-control" placeholder="enter phone number"
+                            value="{{this.profile.Address.mobile}}"></div>
+                    <div class="col-md-12"><label class="labels">Address Line 1</label><input id="address1" type="text"
+                            class="form-control" placeholder="enter address line 1"
+                            value="{{this.profile.Address.address1}}"></div>
+                    <div class="col-md-12"><label class="labels">Address Line 2</label><input id="address2" type="text"
+                            class="form-control" placeholder="enter address line 2"
+                            value="{{this.profile.Address.address2}}"></div>
+                    <div class="col-md-12"><label class="labels">Postcode</label><input id="pincode" type="text"
+                            class="form-control" placeholder="enter address line 2"
+                            value="{{this.profile.Address.pincode}}"></div>
+                    <div class="col-md-12"><label class="labels">State</label><input id="state" type="text"
+                            class="form-control" placeholder="enter address line 2"
+                            value="{{this.profile.Address.state}}"></div>
+                    <div class="col-md-12"><label class="labels">City</label><input id="city" type="text"
+                            class="form-control" placeholder="enter address line 2"
+                            value="{{this.profile.Address.city}}"></div>
+                    <div class="col-md-12"><label class="labels">Email ID</label><input id="email" type="text"
+                            class="form-control" placeholder="enter email id" value="{{this.profile.Address.email}}">
+                    </div>
+                    {{!-- <div class="col-md-12"><label class="labels">UserId</label><input type="text"
+                            class="form-control" placeholder="education" value="{{this.profile._id}}"></div> --}}
+                </div>
+                <div class="row mt-3">
+                    {{!-- <div class="col-md-6"><label class="labels">Country</label><input type="text"
+                            class="form-control" placeholder="country" value=""></div> --}}
+                    {{!-- <div class="col-md-6"><label class="labels">State/Region</label><input type="text"
+                            class="form-control" value="" placeholder="state"></div> --}}
+                </div>
+                <div class="mt-5 text-center"><button class="btn btn-primary profile-button" onclick="saveAddress()"
+                        type="button">Save Address</button></div>
+            </div>
+        </div>
+        {{!-- <div class="col-md-4">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center experience"><span>Edit
+                        Experience</span><span class="border px-3 p-1 add-experience"><i
+                            class="fa fa-plus"></i>&nbsp;Experience</span></div><br>
+                <div class="col-md-12"><label class="labels">Experience in Designing</label><input type="text"
+                        class="form-control" placeholder="experience" value=""></div> <br>
+                <div class="col-md-12"><label class="labels">Additional Details</label><input type="text"
+                        class="form-control" placeholder="additional details" value=""></div>
+            </div>
+        </div> --}}
+    </div>
+</div>
+</div>
+</div>
+
+<script>
+    function saveAddress() {
+        const userIdSpan = document.getElementById("userId");
+        const userIdValue = userIdSpan.innerText;
+
+        const firstNameInput = document.getElementById('firstname');
+        const firstName = firstNameInput.value;
+        const lastNameInput = document.getElementById('lastname');
+        const lastName = lastNameInput.value;
+        const stateInput = document.getElementById('state');
+        const state = stateInput.value;
+        const address1Input = document.getElementById('address1');
+        const address1 = address1Input.value;
+        const address2Input = document.getElementById('address2');
+        const address2 = address2Input.value;
+        const cityInput = document.getElementById('city');
+        const city = cityInput.value;
+        const pincodeInput = document.getElementById('pincode');
+        const pincode = pincodeInput.value;
+        const mobileInput = document.getElementById('mobile');
+        const mobile = mobileInput.value;
+        const emailInput = document.getElementById('email');
+        const email = emailInput.value;
+
+
+        console.log("User ID: ", userIdValue, firstName);
+
+        $.ajax({
+            url: '/changeAddress',
+            data: {
+                userId: userIdValue,
+
+                firstname: firstName,
+                lastname: lastName,
+                state: state,
+                address1: address1,
+                address2: address2,
+                city: city,
+                pincode: pincode,
+                mobile: mobile,
+                email: email,
+
+            },
+            method: 'post',
+            success: (response) => {
+                if (response.updated) {
+                    location.reload()
+                }
+            }
+
+        })
+
+
+    }
+</script>
