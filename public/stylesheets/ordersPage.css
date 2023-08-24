@@ -245,11 +245,12 @@ header p {
 
 .card-bottom button {
   background: none;
+  background-color: #fa9f7b;
   outline: none;
   border: none;
   border-right: 2px solid rgb(235, 235, 235);
   padding: 10px 14px;
-  color: gray;
+  color: rgb(219, 19, 19);
   font-size: 12px;
   cursor: pointer;
   margin-left: 20px;

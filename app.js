@@ -10,7 +10,7 @@ const multer = require('multer');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/admin');
-const exphbs=require('express-handlebars')
+const exphbs=require('express-handlebars') 
 
 // //////////////////////////////////////////////////////////////////////
 // const express = require('express');
@@ -47,7 +47,20 @@ hbs.handlebars.registerHelper('notEqual', function (a, b) {
 });
 hbs.handlebars.registerHelper('equal', function (a, b) {
   return a == b;
+}); 
+hbs.handlebars.registerHelper('formatDate', function (date) {
+  const options = { weekday: "short", month: "long", day: "numeric", year: "numeric" };
+  return new Date(date).toLocaleDateString("en-US", options);
 });
+hbs.handlebars.registerHelper('gt', function (a, b) {
+  return a > b;
+}); 
+
+
+hbs.handlebars.registerHelper('lt', function (a, b) { 
+  return a < b;
+}); 
+
 
 
 

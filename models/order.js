@@ -69,35 +69,16 @@ const orderSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['placed','pending', 'shipped', 'delivered','cancelled'],
+    enum: ['placed','pending', 'shipped', 'delivered','cancelled','return requested'],
     default: 'pending',
   },
   date: {
-    type: String,
-    default: () => {
-      const currentDate = new Date();
-      const options = {
-        weekday: 'short', // Short weekday name (e.g., Mon)
-        month: 'short',   // Short month name (e.g., Jul)
-        day: 'numeric',   // Day of the month (e.g., 31)
-        year: 'numeric',  // Full year (e.g., 2023)
-      };
-      return currentDate.toLocaleDateString('en-US', options);
-    },
+    type: Date, 
+    default: Date.now, 
   },
   // Add more properties as needed
 });
 
-orderSchema.pre('save', function (next) {
-  const dateOptions = {
-    weekday: 'short', // Short weekday name (e.g., Mon)
-    month: 'short',   // Short month name (e.g., Jul)
-    day: 'numeric',   // Day of the month (e.g., 31)
-    year: 'numeric',  // Full year (e.g., 2023)
-  };
-  this.date = new Date(this.date).toLocaleDateString('en-US', dateOptions);
-  next();
-});
 
 const Order = mongoose.model('Order', orderSchema);
 

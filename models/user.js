@@ -30,6 +30,9 @@ Mobile:{
   type:Boolean,
   default:false
 },
+coupons: {
+    type: Array
+},
 Address:[ {
   // Define the address properties directly here
   

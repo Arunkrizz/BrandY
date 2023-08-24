@@ -103,19 +103,39 @@
 
   <div class="card-bottom">
     {{#if (equal this.status "placed")}} 
-    <a href="/cancelOrder?id={{this._id}}"><button>✖ CANCEL ORDER</button></a>
+    <a href="/cancelOrder?id={{this._id}}"><button  class="btn btn-danger">✖ CANCEL ORDER</button></a>
      {{/if}}
       {{#if (equal this.status "pending")}} 
-    <a href="/cancelOrder?id={{this._id}}"><button>✖ CANCEL ORDER</button></a>
+    <a href="/cancelOrder?id={{this._id}}"><button  class="btn btn-danger">✖ CANCEL ORDER</button></a>
      {{/if}}
         {{#if (equal this.status "shipped")}} 
-    <a href="/cancelOrder?id={{this._id}}"><button>✖ CANCEL ORDER</button></a>
+    <a href="/cancelOrder?id={{this._id}}"><button class="btn btn-danger">✖ CANCEL ORDER</button></a>
      {{/if}}
+     {{#if (equal this.status "delivered")}}
+      <a href="/returnOrder?id={{this._id}}"><button class="btn btn-danger">✖ RETURN ORDER</button></a>
+       {{/if}}
     
     <h1>Total Amount: ₹ {{this.totalAmount}}</h1>
   </div>
 </div>
 {{/each}}
+
+
+<div style="display: flex; justify-content: center; margin-top: 20px;">
+<nav aria-label="...">
+  <ul class="pagination">
+    <li class="page-item ">
+      <span class="page-linkc">Previous</span>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">{{page}}</a></li>
+    
+    <li class="page-item">
+      <a class="page-link" href="?page={{page}}">Next</a>
+    </li>
+  </ul>
+</nav>
+</div>
+
 <script>
     $(document).ready(function () {
   $(".card").click(function () {

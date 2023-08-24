@@ -1,5 +1,7 @@
-const productHelpers = require("../helpers/product-helpers")
-const userHelper = require("../helpers/user-helpers")
+const productHelpers = require("../helpers/productHelpers")
+const userHelper = require("../helpers/userHelpers")
+const cartHelper =require("../helpers/cartHelpers")
+const walletHelper = require("../helpers/walletHelper")
 // const Otp=require ('../models/otp')
 // const{AUTH_EMAIL}=process.env
 // ///////////////////////////////////////////////////////////
@@ -10,6 +12,55 @@ const authToken = process.env.TWILIO_AUTH_TOKEN;
 const verifySid = process.env.TWILIO_VERIFY_SID;
 const client = require('twilio')(accountSid, authToken);
 // ///////////////////////////////////////////////////////////
+
+const walletPage=async (req,res)=>{
+  let wallet = await walletHelper.getWallet(req.session.user._id)
+  console.log(wallet,"wallet")
+res.render('wallet',{wallet})
+}
+
+const filter= async (req,res)=>{ 
+  // console.log(req.body,"filter")
+  // let filteredProduct = await productHelpers.filteredProducts(req.body)
+  // console.log(filteredProduct,"filtered Pro")
+  try {
+    try {
+      // if(req.session.user){
+
+      const promises = [
+        productHelpers.filteredProducts(req.body),
+        productHelpers.getAllListedCategory(),
+        cartHelper.getCartProducts(req.session.user._id),
+        userHelper.getTotal(req.session.user._id),
+      ];
+
+      // Wait for all promises to resolve
+      Promise.all(promises)
+        .then(([products, category,cartProducts,total]) => {
+          // console.log(EarRingsProduct);
+          res.render('home', { products, category,cartProducts,total });
+        })
+        .catch((error) => {
+          console.log('Failed to retrieve products:', error);
+          // Handle error
+        });
+
+      // }
+      // else {
+      //   res.redirect('/')
+      // }
+    }
+    catch (err) {
+      console.log(err);
+      console.log("error occured !!!! !here @get home");
+      // res.redirect('/login'); // Handle the error, e.g., redirect to the admin panel
+    }
+  }
+  catch (error) {
+    console.log(error.message);
+  }
+
+}
 
 const checkoutaddAddress =async (req,res)=>{
   const userId =req.session.user._id
@@ -24,6 +75,24 @@ const checkoutaddAddressPage=async(req,res)=>{
 
 const changePrimaryAddress = async (req,res)=>{
 await userHelper.changePrimaryAddress(req.session.user._id,req.body.addressId)
+
+}
+
+
+const checkoutPageDeleteAddress = async (req,res)=>{
+  // console.log(" u-c deleteaddress herre",userId,addressId);
+  const userId =req.session.user._id
+  const addressId = req.query.id
+  const firstName = req.query.fname
+  const lastName = req.query.lname
+   console.log(" u-c deleteaddress herre",userId,addressId);
+  const status = await userHelper.deleteAddress(userId,addressId,firstName,lastName)
+  console.log(status);
+  if (status){
+    res.redirect('/placeorder')
+  }else{
+    res.redirect('/home')  
+  }
 
 }
 
@@ -61,6 +130,35 @@ const addAddress =async (req,res)=>{
   res.render('addnewAddress')
 }
 
+
+
+
+const updateCheckoutAddress =async (req,res)=>{
+
+  const addressId=req.body.id
+  const userId=req.session.user._id
+ 
+  const updatedAddress={
+   
+    firstname:req.body.fname,
+    lastname:req.body.lname,
+    state:req.body.state,
+    address1:req.body.address1,
+    address2:req.body.address2,
+    city:req.body.city,
+    pincode:req.body.pincode,
+    mobile:req.body.mobile,
+    email:req.body.email,
+
+  }
+  console.log(updatedAddress,"updated address",addressId,"addId",userId,"userId");
+ const updated= await userHelper.updateAddress(userId,addressId,updatedAddress)
+//  console.log(updated,"ll");
+ if(updated){
+  res.redirect('/placeorder') 
+ }
+}  
+ 
 const updateAddress =async (req,res)=>{
 
   const addressId=req.body.id
@@ -94,6 +192,15 @@ const editAddress =async (req,res)=>{
   const address = await  userHelper.fetchAddress(userId,addressId)
   // console.log(address,"u-c addressfetched"); 
   res.render('editAddress',{address})
+} 
+
+const checkoutPageEditAddress =async (req,res)=>{ 
+  const addressId = req.query.id
+  const userId = req.session.user._id
+  // console.log(addressId,"addid",userId,"userId");
+  const address = await  userHelper.fetchAddress(userId,addressId)
+  // console.log(address,"u-c addressfetched"); 
+  res.render('checkoutPageEditAddress',{address})
 } 
 
 const changePassword = async (req, res) => {
@@ -154,6 +261,7 @@ const manageAddress = async (req, res) => {
     console.log(profile.Address, "in u-c manageAddress");
     
     res.render('manageAddress', { profile,address })
+    // res.render('s1', { profile,address })
   } catch (error) {
     console.log(error);
   }
@@ -317,14 +425,16 @@ const home = async (req, res) => {
 
       const promises = [
         productHelpers.getAllProducts(),
-        productHelpers.getAllListedCategory()
+        productHelpers.getAllListedCategory(),
+        cartHelper.getCartProducts(req.session.user._id),
+        userHelper.getTotal(req.session.user._id),
       ];
 
       // Wait for all promises to resolve
       Promise.all(promises)
-        .then(([products, category]) => {
+        .then(([products, category,cartProducts,total]) => {
           // console.log(EarRingsProduct);
-          res.render('home', { products, category });
+          res.render('home', { products, category,cartProducts,total });
         })
         .catch((error) => {
           console.log('Failed to retrieve products:', error);
@@ -753,7 +863,12 @@ module.exports = {
   deleteAddress,
   changePrimaryAddress,
   checkoutaddAddress,
-  checkoutaddAddressPage
+  checkoutaddAddressPage,
+  filter,
+  checkoutPageDeleteAddress,
+  checkoutPageEditAddress,
+  updateCheckoutAddress,
+  walletPage
    // getTotalAmount,
   // removeCartProduct,
   // sendOtp,

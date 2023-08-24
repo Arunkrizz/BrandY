@@ -52,7 +52,7 @@
 {{!-- <input type="text" name="Category" class="form-control"> --}}
 <select name="Category" class="form-control">
   {{#each category}}
-<option value="{{this.Category}}">{{this.Category}}</option>
+<option value="{{this.Category}},{{this.id}}">{{this.Category}}</option>
   {{/each}}
   {{!-- <option value="Necklace">Necklace</option>
   <option value="Bangles">Bangles</option>

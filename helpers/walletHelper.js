@@ -4,6 +4,75 @@ const Wallet = require('../models/wallet');
 
 module.exports ={
 
+  getWallet:async (userId )=>{
+    try {
+      return new Promise ((resolve , reject )=>{
+        connectDB()
+        .then(async ()=>{
+          await Wallet.findbyId(userId).then((data)=>{
+            resolve(data)
+          })
+        })
+      })
+    } catch (error) {
+      
+    }
+  },
+
+  updateWallet: async (data,userId)=>{
+    let balance = parseInt(data.walletBalance)
+   return new Promise ((resolve , reject )=>{
+    connectDB()
+    .then(async ()=>{
+      await Wallet.findByIdAndUpdate({userId:userId},{$set:{balance:balance}})
+      resolve(true) 
+    })
+   })
+
+  },
+
+  reduceWalletBalance: async (userId,orderTotal)=>{
+    try {
+      let wallet=await  Wallet.findOne({ userId: userId })
+      let balance =wallet.balance
+      if(orderTotal>balance){
+        balance = 0
+      }else if(orderTotal<balance){
+        balance = (wallet.balance)-orderTotal
+      }
+      await Wallet.findOneAndUpdate({ userId: userId },
+        {
+            $set:{
+                balance:balance
+            }
+        })
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  getWallet:async (userId)=>{
+    try {
+      return new Promise ((resolve,reject)=>{
+        connectDB()
+        .then(async ()=>{
+          let wallet= await  Wallet.findOne({ userId: userId })
+          if (!wallet) {
+            wallet = new Wallet({
+                userId: userId,
+                balance: 0
+            });
+            await wallet.save();
+        }else{
+          resolve(wallet)
+        }
+        })
+      })
+    } catch (error) {
+      
+    }
+  },
+
     updateWalletAmount:async (total,userId)=>{
       try {
         return new Promise (async (resolve, reject)=>{

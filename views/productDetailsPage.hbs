@@ -12,7 +12,7 @@
 <!--BANNER-->
 <div class="banner">
 <section>
-<a href="#">HOME</a> / <a href="#">PRODUCT</a>
+<a href="/home">HOME</a> / <a href="#">PRODUCT</a>
 </section>
 </div>
 
@@ -56,7 +56,7 @@
 {{!-- <td><input type="tel" name="pincode" id="pincode" placeholder="Pincode"></td><td><button class="btn1" type="submit">CHECK</button></td> --}}
 </tr>
 <tr>
-<td>  <a href="/addToCart/{{product._id}}"><button class="btn2">ADD TO CART</button></a></td><td><button class="btn3">BUY NOW</button></td>
+<td>  <button class="btn2" onclick="addtocart('{{product._id}}')">ADD TO CART</button></td>
 </tr>
 </table>
 
@@ -207,4 +207,28 @@
 
 </div>
 </div>
+<script>
+		function addtocart(proId) {
+		  $.ajax({
+			url: '/addToCart/' + proId,
+			method: 'POST',
+	  
+			success: (response) => {
+			  if (response.status==true) {
+				 window.location.href = '/cart'
+				
+			  }else if(response.status=='outOfStock'){
+				Swal.fire({
+				  title: 'Out of Stock',
+				  text: 'Product Out Of Stock',
+				  icon: 'error',
+				  timer: 5000
+				})
+			  }
+			}
+		  })
+		}
+	</script>
+	
+	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/javascripts/productDetailsPage.js"></script>

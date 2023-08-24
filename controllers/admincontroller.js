@@ -1,6 +1,6 @@
-const productHelpers = require('../helpers/product-helpers');
-const userHelpers = require("../helpers/user-helpers")
-const adminHelpers = require("../helpers/admin-helpers")
+const productHelpers = require('../helpers/productHelpers');
+const userHelpers = require("../helpers/userHelpers")
+const adminHelpers = require("../helpers/adminHelpers")
 
 const getOrderDetails= async(req,res)=>{
   const orderId = req.query.OrderId
@@ -482,6 +482,7 @@ const adminEditProduct= async (req, res) => {
 const adminAddProductPage= async (req, res) => {
     try {
       const category= await productHelpers.getAllListedCategory()
+      console.log(category,"add-product");
         res.render('admin/add-product',{category})
     }
     catch (error) {
