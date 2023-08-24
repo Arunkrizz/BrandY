@@ -7,6 +7,17 @@ const Cart = require('../models/cart');
 
 module.exports = {
 
+  productsCount:()=>{
+    return new Promise ((resolve , reject )=>{
+      connectDB()
+      .then(()=>{
+        Product.find({}).count().then ((data)=>{
+          resolve(data)
+        })
+      })
+    })
+  },
+
   checkStock:(userId)=>{
     return new Promise ((resolve ,reject )=>{
       connectDB()

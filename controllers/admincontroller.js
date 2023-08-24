@@ -1,6 +1,73 @@
 const productHelpers = require('../helpers/productHelpers');
 const userHelpers = require("../helpers/userHelpers")
-const adminHelpers = require("../helpers/adminHelpers")
+const adminHelpers = require("../helpers/adminHelpers");
+const orderHelpers = require('../helpers/orderHelpers');
+const categoryHelpers = require('../helpers/categoryHelpers');
+
+const getDashboard =async (req,res)=>{
+try {
+  
+  const ordersData= await orderHelpers.getOrdertotal()
+  const orders =ordersData[0]
+   const categorySales =await orderHelpers.categorySales()
+   const salesData = await orderHelpers.salesData()
+    const salesCount = await orderHelpers.salesCount()
+   const categoryCount  = await categoryHelpers.categoryCount()
+   const productsCount  = await productHelpers.productsCount()
+   const onlinePay = await orderHelpers.getOnlineCount()
+   const codPay = await orderHelpers.getCodCount()
+   const latestorders = await orderHelpers.latestorders()
+   console.log(orders,categorySales,salesData,salesCount,categoryCount,productsCount,onlinePay,codPay,latestorders,"orders total")
+   
+   
+   
+
+    
+    
+    
+
+
+    
+
+
+      res.render('./admin/dashboard',{orders,productsCount,categoryCount,
+        onlinePay:onlinePay[0],salesData,order:latestorders,salesCount,
+        codPay:codPay[0],categorySales})
+  
+}
+ catch (error) {
+  console.log(error)
+}
+
+// res.render('./admin/dashboard')
+}
+
+const allproducts = async (req,res)=>{
+  try {
+    if(req.session.admin){
+      const promises = [
+        productHelpers.getAllProducts(),
+        productHelpers.getAllListedCategory()
+      ];
+      Promise.all(promises)
+      .then(([products,category]) => {
+        console.log(category,"category");
+        res.render('./admin/adminPanel', { products,category });
+      })
+      .catch((error) => {
+        console.log('Failed to retrieve products:', error);
+        // Handle error
+      });
+
+      }
+      else{
+        res.render('admin/admin-login');
+      }
+}
+catch (error) {
+    console.log(error.message);
+  }
+}
 
 const getOrderDetails= async(req,res)=>{
   const orderId = req.query.OrderId
@@ -656,7 +723,7 @@ const getCategory= async (req, res) => {
     cName=req.query.category
     const promises = [
       productHelpers.getCategory(cName),
-      productHelpers.getAllCategory()
+      productHelpers.getAllListedCategory()
     ];
     
     Promise.all(promises)
@@ -717,6 +784,8 @@ module.exports={
     getAllOrders,
     updateDeliveryStatus,
     getOrderDetails,
+    allproducts,
+    getDashboard
     
 
 }

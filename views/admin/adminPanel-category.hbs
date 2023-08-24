@@ -1,33 +1,6 @@
+{{>adminTop}}
 
-   <nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brands font-weight-bold" href="#"><h3>Admin Panel</h3> </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse ml-5" id="navbarSupportedContents">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/admin">All Products</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/admin/allOrders">All Orders</a>
-        </li>
-      
-         <li class="nav-item">
-          <a class="nav-link" href="/admin/allUsers">All Users</a>
-        </li>
 
-    
-      
-         
-       
-      </ul>
-    
-    </div>
-    
-  </div>
-</nav>
 
 
 <section>
@@ -37,7 +10,7 @@
         {{!-- <a href="/admin/add-User" class="btn btn-success  ">Add User</a> --}}
         <a href="/admin/addCategory" class="btn btn-success  ">Add Category</a>
          
-        <a href="/admin/logout" class="btn btn-danger ml-auto ">LOGOUT</a>
+        {{!-- <a href="/admin/logout" class="btn btn-danger ml-auto ">LOGOUT</a> --}}
       </div>
  <table class="table table-striped mt-5">
   <thead>
@@ -80,6 +53,7 @@
 </section>
 
 
+{{>adminBottom}}
 
 
 

@@ -40,7 +40,13 @@ const hbs = exphbs.create({
 	partialsDir: path.join(__dirname, './views/partials'),
 	// helpers: require('./helpers/handlebarHelpers'),
 	runtimeOptions: { allowProtoPropertiesByDefault: true, allowedProtoMethodsByDefault: true },
+  helpers: {
+    jsonStringify: function (context) {
+      return JSON.stringify(context);
+    }
+  }
 })
+
 
 hbs.handlebars.registerHelper('notEqual', function (a, b) {
   return a !== b;

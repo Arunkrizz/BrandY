@@ -23,6 +23,7 @@ router.post('/add-user',adminController.adminAddUser)
 router.get('/allUsers',adminController.getAllUsers )
 router.get('/allOrders',adminController.getAllOrders )
 router.get('/adminViewOrderDetails',adminController.getOrderDetails )
+router.get('/dashboard',adminController.getDashboard)
 
 router.post('/updateDeliveryStatus',adminController.updateDeliveryStatus) 
 
@@ -31,6 +32,7 @@ router.get('/categoryRelist',adminController.categoryRelist)
 router.get('/editCategoryPage',adminController.editCategoryPage)
 router.post('/editCategory',adminController.editCategory)
  
+router.get('/adminAllproducts',adminController.allproducts)
 router.get('/getCategoryProduct',adminController.getCategory)
 router.get('/getAllCategory',adminController.getAllCategory)
 router.post('/addCategory',adminController.InsertCategory)
