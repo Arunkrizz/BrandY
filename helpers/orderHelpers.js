@@ -5,12 +5,117 @@ const Cart = require('../models/cart');
 const Razorpay = require('razorpay');
 const Wallet = require('../models/wallet');
 
+
 let instance = new Razorpay({
   key_id: 'rzp_test_dnjs6k85WVuHl7',
   key_secret: 'Bip621vIunBiWadw3Us3pwE1',
 });
 
 module.exports = {
+
+  findOrdersDelivered_populated:()=>{
+    try {
+      return new Promise ((resolve,reject)=>{
+        connectDB().then(()=>{
+          Order.find({status:"delivered"})
+          .populate({ path: "userId", model: "users" })
+          // .populate({ path: "address", model: "addres" })
+          .populate({ path: "products.product", model: "Product" })
+      .exec().then((data)=>{
+        resolve(data)
+        console.log(data,"data")
+      })
+        })
+      })
+     
+    } catch (error) {
+      console.log(error)
+    }
+  },
+
+  findOrderByDate:(startDate,endDate)=>{
+try {
+  return new Promise ((resolve ,reject)=>{
+    connectDB()
+    .then(()=>{
+      Order.find({
+        // status: "Delivered",
+        date: {
+          $gte: startDate, 
+          $lte: endDate,
+        },
+      })
+        .populate({ path: "userId", model: "users" })
+        // .populate({ path: "address", model: "addres" })
+        .populate({ path: "products.product", model: "Product" })
+        .exec().then((data)=>{
+          resolve(data)
+        })
+    })
+  })
+} catch (error) {
+  console.log(error)
+}
+  },
+
+  getAllOrders:()=>{
+    try {
+     return new Promise ((resolve,reject)=>{
+      connectDB()
+      .then(()=>{
+        Order.find({}).then((data)=>{
+          resolve(data)
+        })
+      })
+     }) 
+    } catch (error) {
+      console.log(error)
+    }
+  },
+
+  findOrdersDelivered:()=>{
+    try {
+      return new Promise ((resolve,reject)=>{
+        connectDB()
+        .then(()=>{
+          Order.find({status:"delivered"}).then((data)=>{
+            resolve(data)
+          })
+        })
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  },
+
+  totalSaleToday:()=>{
+
+    try {
+      const currentDate = new Date();
+     const yesterday = currentDate;
+      yesterday.setDate(yesterday.getDate()-1);
+      //  yesterday.setHours(0, 0, 0, 0); 
+      // const today = new Date();
+      // today.setHours(0, 0, 0, 0);
+      // console.log(today,"date")
+      return new Promise ((resolve , reject)=>{
+        Order.aggregate([
+          {
+            $match: {
+              "delivered.deliveredDate": {
+                $gte: yesterday,
+                $lte: new Date()
+              }
+            }
+          }
+        ]).then((data)=>{
+          resolve(data)
+        })
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  },
 
     latestorders: ()=>{
         try {

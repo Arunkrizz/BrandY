@@ -24,6 +24,12 @@ router.get('/allUsers',adminController.getAllUsers )
 router.get('/allOrders',adminController.getAllOrders )
 router.get('/adminViewOrderDetails',adminController.getOrderDetails )
 router.get('/dashboard',adminController.getDashboard)
+router.get('/totalSaleExcel',adminController.totalSaleExcel)
+router.get('/todayRevenueExcel',adminController.totalRevenueExcel)
+router.get('/allProductExcel',adminController.productListExcel)
+router.get('/allOrderStatusExcel',adminController.allOrderStatus)
+router.get('/orderDetailPDF',adminController.orderDetailPDF)
+router.get('/customDate',adminController.customPDF)
 
 router.post('/updateDeliveryStatus',adminController.updateDeliveryStatus) 
 
@@ -45,6 +51,8 @@ router.get('/listCoupons',couponController.listCoupons)
 router.get('/editcoupon',couponController.editCouponPage)
 router.post('/editcoupon',couponController.editCoupon)
 router.get('/removeCoupon',couponController.deleteCoupon)
+
+
 // //////////////////////////////////////////////////////////////////////////////////////
 
 

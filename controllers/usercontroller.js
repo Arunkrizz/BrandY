@@ -493,6 +493,7 @@ const landingPage = async (req, res) => {
             // console.log(EarRingsProduct);
 
             res.render('landingPage', {products });
+            // res.render('tester')
           })
           .catch((error) => {
             console.log('Failed to retrieve products:', error);

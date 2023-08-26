@@ -9,7 +9,7 @@ const productController = require('../controllers/productController');
 const couponController = require('../controllers/couponController');
 const walletController = require('../controllers/walletController');
 const auth=require ('../middleware/auth')
-
+ 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 router.get('/',userController.landingPage)

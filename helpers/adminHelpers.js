@@ -2,6 +2,20 @@ const connectDB = require("../config/connection");
 const Order = require('../models/order')
 
 module.exports = {
+    updatedelivered:async (details)=>{
+        const status =details.status;
+        const orderId=details.orderId.trim()
+        const date = Date.now()
+        return new Promise ((resolve,reject)=>{
+            connectDB()
+            .then(()=>{
+                Order.findByIdAndUpdate(orderId, { delivered: {status:true ,deliveredDate:date} }).then(()=>{
+                    resolve()
+                })
+            })
+        })
+    }, 
+
     allOrders: async () => {
         return new Promise((resolve, reject) => {
             connectDB()

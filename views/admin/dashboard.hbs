@@ -196,15 +196,15 @@
         <!-- <td><span class="badge rounded-pill alert-success" id="status-val-{{order.orders._id}}">{{order.orders.orderStatus}}</span></td> -->
 
         <td>
-            {{#if (equal this.status 'Placed')}}
+            {{#if (equal this.status 'placed')}}
                 <div class="badge rounded-pill alert-primary">{{this.status}}</div>
-            {{else if (equal this.status 'Dispatched')}}
+            {{else if (equal this.status 'shipped')}}
                 <div class="badge rounded-pill alert-info">{{this.status}}</div>
-            {{else if (equal this.status 'Cancel Requested')}}
+            {{else if (equal this.status 'cancelled')}}
                 <div class="badge rounded-pill alert-warning">{{this.status}}</div>
-            {{else if (equal this.status 'Delivered')}}
+            {{else if (equal this.status 'delivered')}}
                 <div class="badge rounded-pill alert-success">{{this.status}}</div>
-            {{else if (equal this.status 'Return Requested')}}
+            {{else if (equal this.status 'return requested')}}
                 <div class="badge rounded-pill alert-warning">{{this.status}}</div>
             {{else}}
                 <div class="badge rounded-pill alert-danger">{{this.status}}</div>
@@ -230,7 +230,7 @@
            
         </section> <!-- content-main end// -->
 
-        <footer class="main-footer font-xs">
+        {{!-- <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">
                 <div class="col-sm-6">
                     <script>
@@ -243,7 +243,7 @@
                     </div>
                 </div>
             </div>
-        </footer>
+        </footer> --}}
     </main>
 
     <script>
