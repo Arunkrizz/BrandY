@@ -26,9 +26,12 @@
       {{!-- <p>Return Home</p> --}}
       <button  style="font-size: 20px; text-align: center;" >Status: {{this.status}}</button>
       <p>payment method: {{this.paymentMethod}}</p>
+      
           
     {{!-- </button> --}}
   </div>
+  <a href="/invoice?id={{this._id}}"><button class="btn btn-success">Invoice Download</button></a>
+ 
 
   <hr>
 {{#each this.products}}
@@ -67,6 +70,7 @@
     </div>
     <hr>
   </div>
+  
   {{/each}}
 {{!-- 
   <div class="card-container">

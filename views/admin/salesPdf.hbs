@@ -1,3 +1,26 @@
+ {{>adminTop}}
+  <style>
+    .table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+  
+    .table th,
+    .table td {
+      padding: 8px;
+      border: 1px solid black;
+    }
+  
+    .table th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+      text-align: center;
+    }
+  
+    .table td {
+      text-align: center;
+    }
+  </style> 
 <h2 style="text-align-last: center;">Sales Report</h2>
 {{#if orders.length}}
   <table class="table" id="productsTable">
@@ -43,3 +66,5 @@
 {{else}}
   <p>No orders found.</p>
 {{/if}}
+
+{{>adminBottom}}

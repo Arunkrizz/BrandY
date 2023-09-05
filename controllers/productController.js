@@ -55,9 +55,41 @@ const getProductDetails=async (req,res)=>{
     }
   }
   
-
+  const getCategoryProducts = async (req, res) => {
+    try {
+      if(req.session.user){
+              
+        cName=req.query.category
+      const promises = [
+        productHelpers.getCategory("Necklace"),
+        // productHelpers.getAllListedCategory()
+      ];
+      
+        // Wait for all promises to resolve
+        Promise.all(promises)
+          .then(([products]) => {
+            console.log(products);
+            // res.render('home', {products });
+            res.json({products})
+          })
+          .catch((error) => {
+            console.log('Failed to retrieve products:', error);
+            // Handle error
+          });
+    
+      }
+      else {
+        res.redirect('/')
+      }
+    }
+    catch (error) {
+      console.log(error.message);
+    }
+  }
+  
 
   module.exports={
     getProductDetails,
-    getCategoryProduct, 
+    getCategoryProduct,
+    getCategoryProducts, 
   }

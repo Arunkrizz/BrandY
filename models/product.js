@@ -18,6 +18,14 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  OfferPrice: {
+    type: Number,
+    default:0
+  },
+  RealPrice:{
+    type: Number,
+    // default:0
+  },
   Description: {
     type: [String], // Array of strings
     default: [], // Default value as an empty array

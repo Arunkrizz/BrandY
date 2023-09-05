@@ -95,21 +95,33 @@
                             </div>
                         </div>
                         {{/each}}
+
+                        
                         <div class="btn_group">
+                              <button class="gift_btn mr-5">Current Status: {{order.status}}</button>
                             <label for="orderStatus">Change Order Status:</label>
                             <select id="orderStatus">
+                                 <option value="">Choose Status</option>
                                 <option value="placed">Placed</option>
-                                <option value="pending">Pending</option>
+                                {{!-- <option value="pending">Pending</option> --}}
                                 <option value="shipped">Shipped</option>
                                 <option value="delivered">Delivered</option>
+                                {{#if (equal 'return requested' order.status )}}
+                                 <option value="returned">Accept return</option>
+                                 {{/if}}
+                                
                             </select>
+                            {{#if (notEqual "returned" order.status )}}
                             <button onclick="changeStatus()" class="buy_again mr-5">Update Status</button>
+                            {{/if}}
+                           
 
 
 
-                            <button class="gift_btn mr-5">Current Status: {{order.status}}</button>
+                            {{!-- <button class="gift_btn mr-5">Current Status: {{order.status}}</button> --}}
                             {{!-- <button class="gift_btn">Leave seller feedback</button> --}}
                         </div>
+                         <p class="text-danger error"></p>
                     </div>
 
                 </div>
@@ -194,11 +206,14 @@
         function changeStatus() {
             const selectedStatus = document.getElementById("orderStatus").value;
 
+
+
             const orderIdElement = document.getElementById("orderId");
             const orderIdValue = orderIdElement.textContent;
 
             console.log('Changing status to:', selectedStatus,orderIdValue);
-            $.ajax({
+            if(selectedStatus!==''){
+                $.ajax({
                 url: '/admin/updateDeliveryStatus',
                 data: {
                     status: selectedStatus,
@@ -214,6 +229,10 @@
                     }
                 }
             })
+            }else{
+           document.querySelector('.text-danger.error').innerText="Select an option"
+            }
+            
         }
     </script>
 </body>

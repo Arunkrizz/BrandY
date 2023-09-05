@@ -2,6 +2,19 @@ const connectDB = require("../config/connection");
 const Order = require('../models/order')
 
 module.exports = {
+
+    getOrderTotal:async(details)=>{
+        const orderId=details.orderId.trim()
+        return new Promise ((resolve,reject)=>{
+            connectDB()
+            .then(()=>{
+                Order.findById(orderId).then((data)=>{
+                    resolve(data)
+                })
+            })
+        })
+    },
+
     updatedelivered:async (details)=>{
         const status =details.status;
         const orderId=details.orderId.trim()
@@ -20,7 +33,7 @@ module.exports = {
         return new Promise((resolve, reject) => {
             connectDB()
                 .then(() => {
-                    Order.find({}).then((data) => {
+                    Order.find({}).sort({ date: -1 }).then((data) => {
                         resolve(data)
                     }).catch((error) => {
                         console.log(error);

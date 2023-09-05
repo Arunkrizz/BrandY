@@ -3,9 +3,109 @@ const userHelpers = require("../helpers/userHelpers")
 const adminHelpers = require("../helpers/adminHelpers");
 const orderHelpers = require('../helpers/orderHelpers');
 const categoryHelpers = require('../helpers/categoryHelpers');
+const bannerHelper = require('../helpers/bannerHelper');
 const exceljs=require('exceljs')
 const PdfPrinter=require('pdfmake');
-const fs=require('fs')
+const fs=require('fs');
+const walletHelper = require('../helpers/walletHelper');
+
+const addCategoryOffer = async (req,res)=>{
+  try {
+    const category= req.body.Category
+    const offer =parseFloat( req.body.offer)
+    console.log(category,offer,"offer cat");
+    await categoryHelpers.addCategoryOffer(category,offer)
+    await productHelpers.addOffer(category,offer)
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const addCategoryOfferPage = async(req,res)=>{
+  try {
+    
+    const category= await productHelpers.getAllListedCategory()
+    res.render('./admin/addCategoryOffer',{category})
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const deleteBanner = async (req,res)=>{
+try {
+  await bannerHelper.deleteBanner(req.query.id).then((response)=>{
+    if(response){
+      res.redirect('/admin/bannerList')
+    }
+  })
+} catch (error) {
+  console.console.log(error);
+}
+}
+
+const editBanner = async (req,res)=>{
+  try {
+    console.log(req.body,"body")
+    await bannerHelper.editBannerHelper(req.body, req.files['image']).then(( response) => {
+      if (response) {
+          res.redirect("/admin/bannerList");
+      } else {
+          res.status(505);
+      }
+  })
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const editBannerPage = async (req,res)=>{
+  try {
+   await  bannerHelper.fetchBanner(req.query.id).then (async (response)=>{
+    const category = await productHelpers.getAllListedCategory()
+    res.render('./admin/editBanner',{banner:response,category})
+    console.log(response,category)
+   })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const bannerListPage = async (req,res)=>{
+  try{
+    bannerHelper.bannerListHelper().then((response)=> {
+        res.render('./admin/bannerList',{banners:response})
+
+    })
+    
+}
+catch(error){
+    console.log(error);
+}
+}
+
+const addBanner = async (req,res)=>{
+try { 
+ 
+  // console.log(req.body,"kk",req.files,"file",req.files['image'],"lll")
+  await bannerHelper.addBannerHelper(req.body, req.files['image']).then(( response) => {
+    if (response) {
+        res.redirect("/admin/addBanner");
+    } else {
+        res.status(505);
+    }
+})
+   
+   
+  
+} catch (error) {
+  console.log(error)
+}
+}
+
+const addBannerPage = async (req,res)=>{
+  const category = await productHelpers.getAllListedCategory()
+  res.render('./admin/addBanner',{category})
+}
 
 const orderDetailPDF = async (req,res)=>{
 try {
@@ -46,7 +146,7 @@ try {
     // Create document definition
     const docDefinition = {
       content: [
-        { text: "Hexa Shop", style: "header" },
+        { text: "Brandy STORE", style: "header" },
         { text: "\n" },
         { text: "Order Information", style: "header1" },
         { text: "\n" },
@@ -421,6 +521,12 @@ const updateDeliveryStatus=async(req,res)=>{
     if(req.body.status==='delivered'){
       adminHelpers.updatedelivered(req.body)
     }
+    if(req.body.status==='returned'){
+      adminHelpers.getOrderTotal(req.body).then((data)=>{
+        console.log(data,"order tot")
+        walletHelper.updateWalletAmount(data.totalAmount,data.userId)
+      })
+    }
   
    await  adminHelpers.updateDeliveryStatus(req.body).then((response)=>{
     
@@ -447,9 +553,20 @@ const editCategory=async (req,res)=>{
   try {
     let prevName=req.body.cName
     let newName=req.body.newcName
+
+    let CategoryExist= await productHelpers.findCategory({Category:newName})
+    let category= prevName
+    // console.log(CategoryExist,"catExist");
+    if(CategoryExist.length===0){
+      console.log("!categoryExist")
     await productHelpers.changeCategoryName(prevName,newName)
     await productHelpers.changeProductCategoryName(prevName,newName)
     res.redirect('/admin/getAllCategory');
+    }else{
+      console.log("categoryExist")
+      res.render('./admin/admin-editcategory',{category,"message":"Category already exists"})
+    }
+
   } catch (error) {
     
   }
@@ -557,10 +674,17 @@ const InsertCategory= async (req, res) => {
     console.log(req.body.cName,"// here insertcategory");
       try {
         let category={ Category: req.body.cName }
-           await productHelpers.addCategory(category).then(()=>{
-            // res.render('./admin/add-product');
-            res.redirect('/admin/add-product')
-          })
+        await productHelpers.findCategory(category).then(async (data)=>{
+          console.log(data,"data in insrt cat");
+          if(!data){
+            console.log(data,"inside if data in insrt cat");
+            await productHelpers.addCategory(category).then(()=>{
+              // res.render('./admin/add-product');
+              res.redirect('/admin/add-product')
+            })
+          }
+        })
+        res.render('./admin/adminaddCategory',{"message":"Category already exists"})
           // console.log(eproducts,"here");
          
         } catch (error) {
@@ -818,9 +942,31 @@ const adminEditProduct= async (req, res) => {
     //     console.log(error.message);
     //   }
     try {
-        
-      productHelpers.updateProduct(req.params.id,req.body).then((data)=>{
+      const deletedImages = req.body.deletedImages ? req.body.deletedImages.split(",") : [];
+      console.log(deletedImages,"del imgs");
+      productHelpers.updateProduct(req.params.id,req.body,deletedImages).then((data)=>{
           console.log(req.files, "in here multer");
+
+          if (deletedImages && deletedImages.length > 0) {
+            deletedImages.forEach(imgName => {
+                console.log("Attempting to delete:", imgName);
+                const imagePath = `./public/product-images/${imgName}`;
+                if (fs.existsSync(imagePath)) {
+                    fs.unlink(imagePath, err => {
+                        if (err) {
+                            console.error("Error deleting image: ", err.message);
+                        } else {
+                            console.log("Successfully deleted image:", imgName);
+                        }
+                    });
+                } else {
+                    console.error("Image not found on server:", imgName);
+                }
+                
+                
+             
+            });
+        }
           if (req.files && req.files['images[]']) {
             
             const images = req.files['images[]'];
@@ -1092,6 +1238,7 @@ const getCategory= async (req, res) => {
 /////////////////////////////////////////////////////////////////////////////////////
 
 module.exports={
+  addCategoryOfferPage,
     getAdminLogin,
     verifyAdmin,
     logOut,
@@ -1129,7 +1276,14 @@ module.exports={
     productListExcel,
     allOrderStatus,
     customPDF,
-    orderDetailPDF
+    orderDetailPDF,
+    addBannerPage,
+    addBanner,
+    bannerListPage,
+    editBannerPage,
+    editBanner,
+    deleteBanner,
+    addCategoryOffer
     
 
 }

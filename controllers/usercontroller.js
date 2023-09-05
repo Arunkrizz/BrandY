@@ -2,6 +2,7 @@ const productHelpers = require("../helpers/productHelpers")
 const userHelper = require("../helpers/userHelpers")
 const cartHelper =require("../helpers/cartHelpers")
 const walletHelper = require("../helpers/walletHelper")
+const bannerHelper = require('../helpers/bannerHelper');
 // const Otp=require ('../models/otp')
 // const{AUTH_EMAIL}=process.env
 // ///////////////////////////////////////////////////////////
@@ -29,16 +30,18 @@ const filter= async (req,res)=>{
 
       const promises = [
         productHelpers.filteredProducts(req.body),
-        productHelpers.getAllListedCategory(),
-        cartHelper.getCartProducts(req.session.user._id),
-        userHelper.getTotal(req.session.user._id),
+        // productHelpers.getAllListedCategory(),
+        // cartHelper.getCartProducts(req.session.user._id),
+        // userHelper.getTotal(req.session.user._id),
       ];
 
       // Wait for all promises to resolve
       Promise.all(promises)
-        .then(([products, category,cartProducts,total]) => {
+        // .then(([products, category,cartProducts,total]) 
+        .then(([products])=> {
           // console.log(EarRingsProduct);
-          res.render('home', { products, category,cartProducts,total });
+          // res.render('home', { products, category,cartProducts,total });
+          res.json({products})
         })
         .catch((error) => {
           console.log('Failed to retrieve products:', error);
@@ -424,6 +427,7 @@ const home = async (req, res) => {
       // if(req.session.user){
 
       const promises = [
+        bannerHelper.bannerListHelper(),
         productHelpers.getAllProducts(),
         productHelpers.getAllListedCategory(),
         cartHelper.getCartProducts(req.session.user._id),
@@ -432,9 +436,9 @@ const home = async (req, res) => {
 
       // Wait for all promises to resolve
       Promise.all(promises)
-        .then(([products, category,cartProducts,total]) => {
+        .then(([banner,products, category,cartProducts,total]) => {
           // console.log(EarRingsProduct);
-          res.render('home', { products, category,cartProducts,total });
+          res.render('home', {banner, products, category,cartProducts,total });
         })
         .catch((error) => {
           console.log('Failed to retrieve products:', error);

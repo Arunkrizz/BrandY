@@ -4,14 +4,61 @@ const Order = require('../models/order')
 const Cart = require('../models/cart');
 const Razorpay = require('razorpay');
 const Wallet = require('../models/wallet');
-
+const dotenv = require('dotenv').config();
+const SECRET = process.env.RAZPAY_SECRET;
+const { ObjectId } = require("mongodb");
 
 let instance = new Razorpay({
   key_id: 'rzp_test_dnjs6k85WVuHl7',
-  key_secret: 'Bip621vIunBiWadw3Us3pwE1',
+  key_secret: SECRET,
 });
 
 module.exports = {
+
+  invoiceGetOrder:async (orderId)=>{
+    return new Promise ((resolve ,reject)=>{
+        connectDB()
+        .then(()=>{
+            Order.findById(orderId)
+            .populate('products.product')
+            .then((order)=>{
+                resolve (order)
+            }).catch((err)=>{
+                reject(err)
+            })
+        })
+    })
+},
+
+  
+findOrder  :(orderId, userId) => {
+  try {
+    return new Promise((resolve, reject) => {
+      Order.aggregate([
+        {  
+          $match: {
+            "_id": new ObjectId(orderId),
+            userId: new ObjectId(userId),
+          },
+        },
+        { $unwind: "$products" },
+      ]).then((response) => {
+        let orders = response
+          .filter((element) => {
+            if (element._id == orderId) {
+              return true;
+            }
+            return false;
+          })
+          .map((element) => element.products);
+
+        resolve(orders);
+      });
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+},
 
   findOrdersDelivered_populated:()=>{
     try {
@@ -498,7 +545,7 @@ try {
         console.log(details,'chkkkkkkk details');
         console.log("veri pay o-h ");
         return new Promise (async (resolve,reject)=>{
-            const secret ='Bip621vIunBiWadw3Us3pwE1'
+            const secret =SECRET
             const crypto =require('crypto')
             let hmac = await crypto.createHmac('sha256', secret)
             hmac.update(details['payment[razorpay_order_id]']+'|'+details['payment[razorpay_payment_id]'])
@@ -592,7 +639,7 @@ try {
         })
     },
 
-    placeOrder: async (details,data, products, total, user_Id, userName) => {
+    placeOrder: async (details,data, products, total, user_Id, userName,couponDiscount) => {
        try {
         return new Promise(async (resolve, reject) => {
             console.log(details, products, total);
@@ -602,6 +649,7 @@ try {
                 return {
                     product: product.item,
                     quantity: product.quantity,
+                    price:product.price
                 };
             }); 
 
@@ -621,6 +669,7 @@ try {
                 userId: user_Id,
                 paymentMethod:data['paymentMethod'],
                 products: productsWithQuantity,
+                couponDiscountUsed:couponDiscount,
                 totalAmount: total,
                 status: status,
                 date: new Date()

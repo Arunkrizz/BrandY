@@ -62,14 +62,20 @@ const orderSchema = new mongoose.Schema({
       required: true,
       default: 1, // You can set a default quantity if needed
     },
+    price:{
+      type:Number
+    }
   }],
+  couponDiscountUsed:{
+    type: Number,
+  },
   totalAmount: {
     type: Number,
     required: true,
   },
   status: {
     type: String,
-    enum: ['placed','pending', 'shipped', 'delivered','cancelled','return requested'],
+    enum: ['placed','pending', 'shipped', 'delivered','cancelled','return requested','returned'],
     default: 'pending',
   },
   date: {

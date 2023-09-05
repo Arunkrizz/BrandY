@@ -7,6 +7,49 @@ const Cart = require('../models/cart');
 
 module.exports = {
 
+ 
+
+  addOffer:async(category,offer)=>{
+    return new Promise ((resolve,reject)=>{
+      connectDB()
+      .then(()=>{
+        Product.updateMany(
+          { Category: category },
+          [
+            {
+              $set: {
+                Price: {
+                  $subtract: [
+                    "$RealPrice",
+                    {
+                      $multiply: ["$RealPrice", { $divide: [offer, 100] }],
+                    },
+                  ],
+                },
+              },
+            },
+          ],
+          { upsert: true }
+        ) .then(resolve())
+      })
+    })
+  },
+
+  findCategory:(cName)=>{
+return new Promise ((resolve ,reject)=>{
+  connectDB()
+  .then(()=>{
+    Category.find(cName).then((data)=>{
+      console.log(data, 'find cat')
+      resolve(data)
+    }).catch((err)=>{
+      reject(err)
+      console.log(err)
+    })
+  })
+})
+  },
+
   productsCount:()=>{
     return new Promise ((resolve , reject )=>{
       connectDB()
@@ -345,6 +388,7 @@ module.exports = {
         Category: product.Category.split(',')[0],
         CategoryId: product.Category.split(',')[1],
         Price: product.Price,
+        RealPrice:product.Price,
         Description: product.Description
       }
 
@@ -481,8 +525,9 @@ module.exports = {
     });
   },
 
-  updateProduct: (proId, proDetails) => {
+  updateProduct: (proId, proDetails,deletedImages) => {
     return new Promise((resolve, reject) => {
+      proDetails.RealPrice=proDetails.Price;
       connectDB()
         .then(() => {
           // console.log(proDetails,"p-h upd pro");

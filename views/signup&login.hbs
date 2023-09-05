@@ -11,6 +11,7 @@
 </head>
 
 <body>
+    
 
     <div class="container" id="container">
         <div class="form-container sign-up-container">
@@ -27,7 +28,11 @@
             {{#if loginErr}}
             <p class="text-white">Invalid UserName or Password</p>
             {{/if}}
+              {{#if blocked}}
+            <p class="text-white">USER BLOCKED</p>
+            {{/if}}
                 <h1>Log In</h1>
+             
              
                 <input type="email" name="email" placeholder="Email">
                 <input type="password" name="password" placeholder="Password">
@@ -58,5 +63,6 @@
     <script src="/javascripts/signup.js"></script>
     <script src="https://unpkg.com/ionicons@4.2.2/dist/ionicons.js"></script>
 </body>
+
 
 </html>

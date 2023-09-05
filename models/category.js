@@ -10,7 +10,12 @@ const categorySchema = new mongoose.Schema({
   Listed:{
    type:Boolean,
    default:true
- }
+ },
+ 
+ OfferPercentage:{
+  type:Number,
+   default:0
+}
   
 
   // Add more properties as needed

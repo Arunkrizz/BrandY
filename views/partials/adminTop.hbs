@@ -23,6 +23,7 @@
     <!-- Libraries Stylesheet -->
     <link href="/assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="/assets/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+    
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
@@ -190,6 +191,17 @@
                            
                         </div> 
                         </div>
+                          <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle " data-bs-toggle="dropdown"><i
+                                class="far fa-file-alt me-2"></i>Banner</a>
+                        <div class="dropdown-menu bg-transparent border-0">
+                            <a href="/admin/bannerList" class="dropdown-item">Banner List</a>
+                            <a href="/admin/addBanner" class="dropdown-item">Add Banner</a>
+                            {{!-- <a href="404.html" class="dropdown-item">404 Error</a> --}}
+                            {{!-- <a href="blank.html" class="dropdown-item active">Blank Page</a> --}}
+                           
+                        </div> 
+                        </div>
 
                           {{!-- <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle " data-bs-toggle="dropdown"><i
@@ -203,37 +215,16 @@
                            
                         </div> 
                         </div> --}}
-                        <div class="nav-item dropdown">
-                        
-                            <ul class="nav">
-                                 <li class="nav-item menu-items">
-            <a class="nav-link" data-toggle="collapse" href="#salesReport" aria-expanded="false" aria-controls="salesReport">
-              <span class="menu-icon">
-                <i class="mdi mdi-playlist-play"></i>
-              </span>
-              <span class="menu-title">Sales Report</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="salesReport">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item">
-                  <a class="nav-link" href="/admin/totalSaleExcel">Total Sale</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="/admin/todayRevenueExcel">Today Revenue</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="/admin/allProductExcel">All Product</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="/admin/allOrderStatusExcel">All OrderStatus</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" target="_blank" href="/admin/orderDetailPDF">Order View</a>
-                </li>
-          
-                <li class="nav-item mt-4">
-                  <label for="start">Start Date:</label>
+                           <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle " data-bs-toggle="dropdown"><i
+                                class="far fa-file-alt me-2"></i>Sales Report</a>
+                        <div class="dropdown-menu bg-transparent border-0">
+                          <a class="nav-link" href="/admin/totalSaleExcel">Today Sales</a>
+                            <a class="nav-link" href="/admin/todayRevenueExcel">Today Revenue</a>
+                          <a class="nav-link" href="/admin/allProductExcel">All Product</a>
+                          <a class="nav-link" href="/admin/allOrderStatusExcel">All OrderStatus</a>
+                          <a class="nav-link" target="_blank" href="/admin/orderDetailPDF">Order View</a>
+                           <label for="start">Start Date:</label>
                   <input type="date" id="start" name="start" required>
                 
                   <label for="end">End Date:</label>
@@ -246,31 +237,10 @@
                     <span class="tooltip">Download</span>
                  </button>
                 </a>
-                </li>
-                
-                <script>
-                  const customDateLink = document.getElementById('customDateLink');
-                  const startDateInput = document.getElementById('start');
-                  const endDateInput = document.getElementById('end');
-                
-                  customDateLink.addEventListener('click', (event) => {
-                    event.preventDefault(); // Prevent the default link behavior
-                
-                    const startDate = startDateInput.value;
-                    const endDate = endDateInput.value;
-                
-                    setTimeout(() => {
-                      const url = `/admin/customDate?start=${encodeURIComponent(startDate)}&end=${encodeURIComponent(endDate)}`;
-                      window.open(url, '_blank');
-                    }, 1000); 
-                  });
-                </script>
-                
-                
-
-                </li>
-              </ul>
-            </div>
+                           
+                        </div> 
+                        </div>
+                        
           </li>
                             </ul>
                       
@@ -308,3 +278,21 @@
                     </div>
                 </div>
             </nav>
+
+             <script>
+                  const customDateLink = document.getElementById('customDateLink');
+                  const startDateInput = document.getElementById('start');
+                  const endDateInput = document.getElementById('end');
+                
+                  customDateLink.addEventListener('click', (event) => {
+                    event.preventDefault(); // Prevent the default link behavior
+                
+                    const startDate = startDateInput.value;
+                    const endDate = endDateInput.value;
+                
+                    setTimeout(() => {
+                      const url = `/admin/customDate?start=${encodeURIComponent(startDate)}&end=${encodeURIComponent(endDate)}`;
+                      window.open(url, '_blank');
+                    }, 1000); 
+                  });
+                </script>

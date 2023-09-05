@@ -2,6 +2,136 @@ const userHelper = require("../helpers/userHelpers")
 const orderHelper = require("../helpers/orderHelpers")
 const walletHelper = require("../helpers/walletHelper")
 const productHelper=require("../helpers/productHelpers")
+const easyinvoice = require("easyinvoice");
+const fs = require("fs");
+const { Readable } = require('stream');
+
+const getOrderInvoice= async (req,res)=>{
+  // let result;
+  try {
+    const id = req.query.id
+    userId = req.session.user._id;
+
+    result = await orderHelper.invoiceGetOrder(id);
+    console.log(result,"invoice")
+    const date = result.date.toLocaleDateString();
+    const product = result.products;
+    console.log(result,"inv2");
+
+    const order = {
+      id: id,
+      total:parseInt( result.totalAmount),
+      date: date,
+      payment: result.paymentMethod,
+      name: result.deliveryDetails.firstname,
+      street: result.deliveryDetails.address1,
+      locality: result.deliveryDetails.address2,
+      city: result.deliveryDetails.city,
+      state: result.deliveryDetails.state,
+      pincode: result.deliveryDetails.pincode,
+      product: result.products,
+    };
+   
+// console.log(product.couponDiscountUsed,"disc amt");
+let totalQuantity = 0;
+
+// Iterate through the products and sum up the quantities
+for (const products of product) {
+  totalQuantity += products.quantity;
+}
+
+console.log('Total Quantity:', totalQuantity);
+
+const discountUsed =parseFloat((result.couponDiscountUsed)/totalQuantity)
+    const products = order.product.map((product) => ({
+      "quantity":parseInt( product.quantity),
+      "description": product.product.Name,
+      "tax-rate":0,
+      "price": parseFloat(product.price-discountUsed), 
+      // "discount": parseFloat(discountUsed),
+    }));
+
+    console.log(discountUsed,"inv222",products,"inv2"); 
+
+  
+    var data = {
+      customize: {},
+      images: {
+        // logo: "https://public.easyinvoice.cloud/img/logo_en_original.png",
+
+        background: "https://public.easyinvoice.cloud/img/watermark-draft.jpg",
+      },
+
+
+      sender: {
+        company: "Brandy STORE",
+        address: "Brototype",
+        zip: "686633",
+        city: "Maradu",
+        country: "India",
+      },
+
+      client: {
+        company: order.name,
+        address: order.street,
+        zip: order.pincode,
+        city: order.city,
+        // state:" <%=order.state%>",
+        country: "India",
+      },
+      information: {
+        number: order.id,
+
+        date: order.date,
+        // Invoice due date
+        "due-date": "Nil",
+      },
+
+      products: products,
+      // The message you would like to display on the bottom of your invoice
+      "bottom-notice": "Thank you,Keep shopping.",
+    };
+    //  result= Object.values(result)
+    //  data.total = 0  
+    
+    
+    
+      easyinvoice.createInvoice(data, async  (result)=> {
+        //The response will contain a base64 encoded PDF file
+        
+        console.log(result.calculations,"lll",result,"jjj11",data,"pdf11");
+        if (result && result.pdf) {
+          await fs.writeFileSync("invoice.pdf", result.pdf, "base64");
+      
+        
+  
+  
+         // Set the response headers for downloading the file
+         res.setHeader('Content-Disposition', 'attachment; filename="invoice.pdf"');
+         res.setHeader('Content-Type', 'application/pdf');
+   
+         // Create a readable stream from the PDF base64 string
+         const pdfStream = new Readable();
+         pdfStream.push(Buffer.from(result.pdf, 'base64'));
+         pdfStream.push(null);
+   
+         // Pipe the stream to the response
+         pdfStream.pipe(res);
+        }else {
+          // Handle the case where result.pdf is undefined or empty
+          res.status(500).send("Error generating the invoice");
+        }
+  
+        
+      }).catch((err)=>{
+        console.log(err,"errrrrrr")
+      })
+   
+   
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 const returnOrder =async (req,res)=>{
   try {
@@ -94,6 +224,7 @@ const cancelOrder =async(req,res)=>{
   
   const checkOut =async (req,res)=>{
   try { 
+    const couponDiscount = parseInt(req.body.couponDiscount)
     console.log(req.body,"in checkout u-c");
    const couponCode=req.body?.couponCode
    const userId =req.session.user._id
@@ -104,10 +235,12 @@ const cancelOrder =async(req,res)=>{
     let products=await orderHelper.getCartProductList(user._id)
     // console.log(products,"in checkout u-c");
     let totalPrice= await userHelper.getTotal(user._id)
+    totalPrice=totalPrice-couponDiscount
+    console.log(totalPrice,couponDiscount,"in checkout u-c");
     let deliveryAddress= await userHelper.fetchPrimaryAddress(req.session.user._id,req.body.addressId)
     // console.log(req.body,"deliverydetails /checkoutt");
     // await userHelper.addAddress(req.body,user._id)
-    await orderHelper.placeOrder(deliveryAddress,req.body,products,totalPrice,user._id,user.Name).then (async  (orderId)=>{
+    await orderHelper.placeOrder(deliveryAddress,req.body,products,totalPrice,user._id,user.Name,couponDiscount).then (async  (orderId)=>{
       console.log(orderId,"ord Id o-c chkout"); 
       if(req.body['paymentMethod']=='COD'){
         
@@ -176,6 +309,7 @@ const cancelOrder =async(req,res)=>{
     placeOrder,
     verifyPayment,
     checkStock,
-    returnOrder
+    returnOrder,
+    getOrderInvoice
     
   }

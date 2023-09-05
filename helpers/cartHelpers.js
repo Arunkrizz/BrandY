@@ -8,7 +8,8 @@ module.exports={
 		const product = await Product.findOne({_id: proId})
 		let proObj = {
 			item: proId,
-			quantity: 1
+			quantity: 1,
+			price:product.Price
 		}
 		console.log(product,"pro in addto cart")
 		return new Promise(async (resolve, reject) => {

@@ -187,23 +187,29 @@
 								{{/each}}
 								<p class="d-flex">
 									<span>Delivery</span>
-									<span>$0.00</span>
+									<span>Rs.0.00</span>
 								</p>
-								<p class="d-flex">
+								<p class="d-flex " >
 									<span>Coupon Discount</span>
-									<span>$0.00</span>
+									<span id="couponDiscount">Rs.0.00</span>
+									
 								</p>
 									<div>
+										<span id="couponDiscountValue" hidden >0</span>
 									{{!-- <label>
 										<input type="radio" name="radioGroup" value="option1" onclick="walletRadioClick(this); this.onclick = null;"> Use Wallet Balance  
 									</label> --}}
 									<div class="form-check">
   									<input class="form-check-input" onclick="walletRadioClick(this);" type="checkbox" value="" id="flexCheckDefault">
- 									 <label class="form-check-label" for="flexCheckDefault">
-  												  Use Wallet Balance  
- 									 </label>
+ 									 {{!-- <label class="form-check-label" for="flexCheckDefault"> --}}
+											<p class="d-flex " >
+									<span>Use Wallet Balance</span>
+									<span id="couponDiscount">Rs.{{this.wallet.balance}} </span>
+								</p>
+  												  {{!-- Use Wallet Balance {{this.wallet.balance}}  --}}
+ 									 {{!-- </label> --}}
 									</div>
-									<p id="wallet-minus"></p>
+									{{!-- <p id="wallet-minus"></p> --}}
 								</div>
 								<div class="basket-module">
 									<label for="promo-code">Enter a promotional code</label>
@@ -378,10 +384,12 @@
   function applyCoupon() {
             event.preventDefault();
             
-
+			const couponDiscount= document.getElementById('couponDiscountValue').innerText
 			 const couponCode = document.getElementById("promo-code").value
 			 const totalElement = document.getElementById("total");
 			 const total = parseFloat(totalElement.textContent);
+
+			 
 
             $.ajax({
                 url: '/verifyCoupon/' + couponCode,
@@ -400,12 +408,14 @@
                                     document.getElementById('couponErr').innerText = "Coupon Applied SuccessFully"
                                     // document.getElementById('subTotal').innerText = total - response.discountAmount
                                     document.getElementById('total').innerText = '₹' + Math.floor(total - response.discountAmount)
+									 document.getElementById('couponDiscount').innerText = 'Rs.' + response.discountAmount
+									 document.getElementById('couponDiscountValue').innerText =response.discountAmount
                                   //  document.getElementById('totalVal').value = Math.floor(total - response.discountAmount)
                                   //  document.getElementById('couponOffer').innerText = response.discount + '%'
                                   //  document.getElementById('discountPercentage').value = response.discount
                                   //  document.getElementById('discountAmount').value = Math.ceil(response.discountAmount)
 
-
+								//	console.log(document.getElementById('couponDiscountValue').innerText,"dicount")
                                 } else {
 									console.log("in here22 ")
                                     document.getElementById('couponErr').style.color = "#ff0707"
@@ -527,6 +537,7 @@
 				checkout()
 
 				function checkout() {
+					const couponDiscount= document.getElementById('couponDiscountValue').innerText
 					const totalElement = document.getElementById("total");
 			 const total = parseFloat(totalElement.textContent);
 
@@ -537,14 +548,15 @@
 						walletUsed=true
 					}
 
-					console.log("ajjx checkout");
+					console.log(couponDiscount,"ajjx checkout");
 					$.ajax({
 						url: '/checkout',
 						data: {
 							paymentMethod: paymentMethod,
 							total: total,
 							walletUsed,
-							couponCode
+							couponCode,
+							couponDiscount
 
 
 						},

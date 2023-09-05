@@ -566,7 +566,7 @@ module.exports = {
 
 				const cartTotal=await Cart.findOneAndUpdate({user:userId},{$set:{total:total[0]?.total}})
 
-				// console.log(cartTotal,"total u-h ");
+				// console.log(total,"total u-h ");
 				resolve(total[0]?.total);
 			} catch (error) {
 				reject(error);

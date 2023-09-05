@@ -5,7 +5,7 @@ const nodemailer = require('nodemailer')
 const bcrypt = require("bcrypt")
 
 
-module.exports = {
+module.exports = { 
 
     deleteOtp: async (email) => {
 		console.log("del_otp");

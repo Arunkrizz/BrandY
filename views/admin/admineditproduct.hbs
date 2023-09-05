@@ -39,7 +39,7 @@
 
 <div class="row">
 
-<div class="col-md-6">
+<div class="col-md-12">
     
     <h2 class="text-center">Edit Product</h2>
 
@@ -53,6 +53,7 @@
 <label for="">Price</label>
 <input type="text" name="Price" value={{product.Price}} class="form-control">
 
+
 <label for="">Description</label>
 <input type="text" name="Description" value={{product.Description}} class="form-control">
 
@@ -61,8 +62,21 @@
 
 
 
-<label for="">Image</Label>
-<img src="/product-images/{{product._id}}0.jpg" style="width:100px;height:auto" alt="" id="imgView">
+<label for="">Image</Label><br>
+<div class="image-wrapper">
+<img src="/product-images/{{product._id}}0.jpg" style="width:100px;height:100px" alt="" id="imgView0"><br>
+<button type="button" class="btn btn-danger" onclick="deleteImage('imgView0')">Delete</button><br>
+</div>
+<div class="image-wrapper">
+<img src="/product-images/{{product._id}}1.jpg" style="width:100px;height:100px" alt="" id="imgView1"><br>
+<button type="button" class="btn btn-danger"onclick="deleteImage('imgView1')">Delete</button><br>
+</div>
+<div class="image-wrapper">
+<img src="/product-images/{{product._id}}2.jpg" style="width:100px;height:100px" alt="" id="imgView2"><br>
+<button type="button" class="btn btn-danger" onclick="deleteImage('imgView2')">Delete</button><br>
+</div>
+
+<input type="hidden" id="deletedImages" name="deletedImages" value="">
 {{!-- <input type="file" name="Image"  class="form-control" onchange="viewImage(event) " > --}}
 <input type="file" name="images[]"  class="form-control" onchange="viewImage(event) " multiple>
 
@@ -82,6 +96,25 @@
   function viewImage(event){
     document.getElementById('imgView').src=URL.createObjectURL(event.target.files[0])
   }
+</script>
+
+<script>
+  function deleteImage(imgViewId) {
+            const imageElement = document.getElementById(imgViewId);
+            const deletedImagesInput = document.getElementById('deletedImages');
+
+            // Add the image's filename to the deleted images list
+            if (deletedImagesInput.value) {
+                deletedImagesInput.value += ',' + imageElement.src.split('/').pop();
+            } else {
+                deletedImagesInput.value = imageElement.src.split('/').pop();
+            }
+
+            // Remove image preview and its delete button from the page
+            const imageWrapper = imageElement.parentNode;  // Assuming this is the container of both the image and the delete button.
+            imageWrapper.parentNode.removeChild(imageWrapper);
+
+        }
 </script>
 
 
