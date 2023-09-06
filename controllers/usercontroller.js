@@ -496,7 +496,7 @@ const landingPage = async (req, res) => {
           .then(([products]) => {
             // console.log(EarRingsProduct);
 
-            res.render('landingPage', {products });
+            res.render('LandingPage', {products });
             // res.render('tester')
           })
           .catch((error) => {
