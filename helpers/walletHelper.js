@@ -4,6 +4,22 @@ const Wallet = require('../models/wallet');
 
 module.exports ={
 
+  getWalletBalance:async (userId)=>{
+    try {
+      return new Promise ((resolve,reject)=>{
+        connectDB()
+        .then(()=>{
+          Wallet.find({userId:userId}).then((data)=>{
+            console.log(data,"wall amt");
+            resolve(data[0].balance)
+          })
+        })
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  },
+
   getWallet:async (userId )=>{
     try {
       return new Promise ((resolve , reject )=>{

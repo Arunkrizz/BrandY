@@ -224,6 +224,7 @@ const cancelOrder =async(req,res)=>{
   
   const checkOut =async (req,res)=>{
   try { 
+    // const walletAmount= await walletHelper.getWalletBalance(req.session.user._id)
     const couponDiscount = parseInt(req.body.couponDiscount)
     console.log(req.body,"in checkout u-c");
    const couponCode=req.body?.couponCode
@@ -236,7 +237,11 @@ const cancelOrder =async(req,res)=>{
     // console.log(products,"in checkout u-c");
     let totalPrice= await userHelper.getTotal(user._id)
     totalPrice=totalPrice-couponDiscount
-    console.log(totalPrice,couponDiscount,"in checkout u-c");
+    // if (req.body.walletUsed==='true'){
+    //   console.log("in if ",totalPrice,"kk", walletAmount,"kk");
+    //   totalPrice=totalPrice-walletAmount
+    // }
+    console.log(totalPrice,"in checkout u-c",totalAmt,"hhh");
     let deliveryAddress= await userHelper.fetchPrimaryAddress(req.session.user._id,req.body.addressId)
     // console.log(req.body,"deliverydetails /checkoutt");
     // await userHelper.addAddress(req.body,user._id)

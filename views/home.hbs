@@ -327,7 +327,7 @@
 
 
     <!-- Cart -->
-    <div class="wrap-header-cart js-panel-cart">
+    <div id="content"  class="wrap-header-cart js-panel-cart">
         <div class="s-full js-hide-cart"></div>
 
         <div class="header-cart flex-col-l p-l-65 p-r-25">
@@ -341,7 +341,7 @@
                 </div>
             </div>
 
-            <div class="header-cart-content flex-w js-pscroll">
+            <div  class="header-cart-content flex-w js-pscroll">
                 <ul class="header-cart-wrapitem w-full">
 
                     {{#each cartProducts}}
@@ -1224,13 +1224,34 @@
             method: 'post',
             success: (response) => {
                 console.log('chkkkkkkkkkkk cart')
-                Swal.fire({
+                if(response.status=='outOfStock'){
+                    Swal.fire({
+
+                    icon: 'warning',
+                    title: 'Out of Stock',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                }else{
+                    Swal.fire({
 
                     icon: 'success',
                     title: 'Your product successfully added to the cart',
                     showConfirmButton: false,
                     timer: 1500
                 })
+                      fetch('/home')
+                .then(response => response.text())
+                .then(data => {
+                    // Update the content of the specific div with the new data
+                    document.getElementById('content').innerHTML = data;
+                })
+                .catch(error => {
+                    // Handle errors if the fetch request fails
+                    console.error('An error occurred:', error);
+                });
+                }
+                
             }
         })
     }
