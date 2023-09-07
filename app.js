@@ -113,7 +113,7 @@ app.use(function(err, req, res, next) {
 });
 
 var debug = require('debug')('11:server');
-// var http = require('http');
+var http = require('http');
 
 /**
  * Get port from environment and store in Express.
