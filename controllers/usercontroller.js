@@ -290,7 +290,7 @@ const verify = async (req, res) => {
     const mobileNumber = req.body.mobileNumber
     client.verify.v2
       .services(verifySid)
-      .verifications.create({ to:`+91${mobileNumber}` , channel: 'sms' })
+      .verifications.create({ to: "+91"+ mobileNumber, channel: 'sms' })
       .then((verification) => {
         console.log(verification.status);
         res.render('verify_otp', { mobileNumber });
