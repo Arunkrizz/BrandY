@@ -8,9 +8,9 @@ const bannerHelper = require('../helpers/bannerHelper');
 // ///////////////////////////////////////////////////////////
 // twilio otp
 const dotenv = require('dotenv').config();
-const accountSid = ACd06c7b7c93b843454df47076fbd850ea;
-const authToken = a85976ea936289464df25b19fd02c36b;
-const verifySid = VAb505dda10641667a95e4e4116a47966e;
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const verifySid = process.env.TWILIO_VERIFY_SID;
 const client = require('twilio')(accountSid, authToken);
 // ///////////////////////////////////////////////////////////
 
