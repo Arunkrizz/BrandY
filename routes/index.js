@@ -7,11 +7,11 @@ const orderController = require('../controllers/orderController');
 const otpController = require('../controllers/otpController');
 const productController = require('../controllers/productController');
 const couponController = require('../controllers/couponController');
-const walletController = require('../controllers/walletController');
+const walletController = require('../controllers/walletController'); 
 const auth=require ('../middleware/auth')
  
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////// /////////////////////////
 router.get('/',userController.landingPage)
 // router.get('/',(req,res)=>{res.render('productDetailsPage')})
 router.post('/verify',userController.verify)
