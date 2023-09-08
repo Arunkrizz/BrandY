@@ -232,7 +232,7 @@ const cancelOrder =async(req,res)=>{
    console.log(couponCode,"coupon code");
    const ifCouponUsed= await userHelper.addCouponToUser(couponCode, userId);
     const user=req.session.user
-    const totalAmt= parseInt(req.body.total)
+    const totalAmt= (req.body.total)
     let products=await orderHelper.getCartProductList(user._id)
     // console.log(products,"in checkout u-c");
     let totalPrice= await userHelper.getTotal(user._id)
