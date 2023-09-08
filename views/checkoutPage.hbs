@@ -505,10 +505,16 @@
 
 	<script>
 
+
+
 		document.addEventListener("DOMContentLoaded", function () {
 			const getDataButton = document.getElementById("getDataButton");
 			getDataButton.addEventListener("click", function () {
 
+				let addressRadio = document.getElementById("flexRadioDefault1");
+				if (!(addressRadio.checked)) {
+                alert("select an Address");
+            }
 
 
 				const codRadioButton = document.getElementById("COD");
@@ -538,6 +544,11 @@
 				checkout()
 
 				function checkout() {
+
+					let addressRadio = document.getElementById("flexRadioDefault1");
+				if ((addressRadio.checked)) {
+                
+           
 					const couponDiscount= document.getElementById('couponDiscountValue').innerText
 					const totalElement = document.getElementById("total");
 			 const total = parseFloat(totalElement.textContent);
@@ -575,6 +586,8 @@
 							}
 						}
 					});
+					 }
+
 				}
 
 				function razorpayPayment(order) {
