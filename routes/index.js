@@ -36,7 +36,7 @@ router.post('/addTocart/:id',auth.isLogout,auth.isBlocked,cartController.addToCa
 router.get('/cart',auth.isLogout,auth.isBlocked,cartController.getCart)
 router.post('/changeProductQuantity',auth.isLogout,auth.isBlocked,cartController.changeQuantity)
 router.post('/removeCartProduct',auth.isLogout,auth.isBlocked,cartController.removeCartProduct)
-router.get('/applyCoupon',auth.isLogout,auth.isBlocked,couponController.applyCoupon)
+router.get('/applyCoupon',auth.isLogout,auth.isBlocked,couponController.applyCoupon) 
 router.get('/verifyCoupon/:id',auth.isLogout,auth.isBlocked,couponController.verifyCoupon)
  
 router.get('/placeorder',auth.isLogout,auth.isBlocked,orderController.placeOrder)

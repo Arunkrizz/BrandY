@@ -102,7 +102,7 @@
 				<div class="col-xl-10 ftco-animate">
 					{{!-- {{#each address}} --}}
 					<div class="row mb-3">
-
+						{{#if (notEqual address 0)}}
 						{{#each address}}
 						<div class="col-lg-4 mb-3">
 							
@@ -148,6 +148,7 @@
 							</div>
 						</div>
 						{{/each}}
+						{{/if}}
 						<a href="/checkoutaddAddress">
 							<div class="p-3 card-child mt-4 py-4">
 								<div class="d-flex flex-row align-items-center">
@@ -155,7 +156,7 @@
 										<i class="fa fa-plus"></i>
 									</span>
 									<div class="d-flex flex-column ms-3 m-3">
-										<h6 class="fw-bold text-primary">Add New Address</h6>
+										<h6 class="fw-bold text-primary">Add New Address </h6>
 									</div>
 								</div>
 							</div>

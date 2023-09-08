@@ -293,7 +293,10 @@ const cancelOrder =async(req,res)=>{
       
       Promise.all(promises)
       .then(([total,subTotal,address,wallet]) => {
-        console.log(address,"address o-c placeorder");
+        console.log(address,address.length, "address o-c placeorder");
+        if (address.length===0){
+          [address]=[0]
+        }
         res.render('checkoutPage',{total,subTotal,address,wallet})
         // res.render('s1',{total,subTotal,address})
       })
