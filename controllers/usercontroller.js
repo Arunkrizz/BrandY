@@ -315,7 +315,7 @@ const verifys = async (req, res) => {
     console.log(otpCode, "otp", mobile, "mobile")
     client.verify.v2
       .services(verifySid)
-      .verificationChecks.create({ to: mobile, code: otpCode })
+      .verificationChecks.create({ to: "+91"+ mobile, code: otpCode })
       .then((verificationCheck) => {
         console.log(verificationCheck.status);
         // verified=true               // verified is made true here check for bugs

@@ -1149,56 +1149,6 @@ const getAllUsers= async (req, res) => {
 
 /////////////////////////////////////////////////////////////////////////////////////
 
-const getNecklaces= async (req, res) => {
-    try {
-        try {
-            const nproducts = await productHelpers.getNecklace_Products();
-            // console.log(eproducts,"here");
-            res.render('./admin/adminPanel', { products: nproducts });
-          } catch (error) {
-            console.log('Failed to get products:', error);
-            res.status(500).send('Internal Server Error');
-          }
-    }
-    catch (error) {
-        console.log(error.message);
-      }
-}
-/////////////////////////////////////////////////////////////////////////////////////
-
-const getBangles= async (req, res) => {
-    try {
-        try {
-            const Bangleproducts = await productHelpers.getBangles_Products();
-            // console.log(clothproducts,"here");
-            res.render('./admin/adminPanel', { products: Bangleproducts });
-          } catch (error) {
-            console.log('Failed to get products:', error);
-            res.status(500).send('Internal Server Error');
-          }  
-    }
-    catch (error) {
-        console.log(error.message);
-      }
-}
-
-/////////////////////////////////////////////////////////////////////////////////////
-
-const getEarRings= async (req, res) => {
-    try {
-        try {
-            const EarRingproducts = await productHelpers.getEarRings_Products();
-            // console.log(clothproducts,"here");
-            res.render('./admin/adminPanel', { products: EarRingproducts });
-          } catch (error) {
-            console.log('Failed to get products:', error);
-            res.status(500).send('Internal Server Error');
-          }  
-    }
-    catch (error) {
-        console.log(error.message);
-      }
-}
 
 /////////////////////////////////////////////////////////////////////////////////////
 
@@ -1255,9 +1205,6 @@ module.exports={
     adminAddUserPage,
     adminAddUser,
     getAllUsers,
-    getNecklaces,
-    getBangles,
-    getEarRings,
     getCategory,
     getAllCategory,
     InsertCategory,
