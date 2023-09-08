@@ -562,7 +562,7 @@ try {
     },
 
     generateRazorpay:async (orderId,total)=>{
-        console.log("in o-h genraz pay ");
+        console.log(total,"in o-h genraz pay ");
         if(total===0){
             total=1
         }
@@ -642,7 +642,7 @@ try {
     placeOrder: async (details,data, products, total, user_Id, userName,couponDiscount) => {
        try {
         return new Promise(async (resolve, reject) => {
-            console.log(details, products, total);
+            console.log(details, products, total,"raz placeorder oh helper");
             let status = data['paymentMethod'] === 'COD' ? 'placed' : 'pending'
 
             const productsWithQuantity = products?.map(product => {
